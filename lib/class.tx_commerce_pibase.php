@@ -39,8 +39,9 @@ require_once(PATH_tslib.'class.tslib_pibase.php');
  */
 require_once(t3lib_extmgm::extPath('commerce').'lib/class.tx_commerce_product.php');
 require_once(t3lib_extmgm::extPath('commerce').'lib/class.tx_commerce_category.php');
-require_once (t3lib_extMgm::extPath('moneylib').'class.tx_moneylib.php');
+require_once(t3lib_extMgm::extPath('moneylib').'class.tx_moneylib.php');
 require_once(t3lib_extmgm::extPath('commerce').'lib/class.tx_commerce_div.php');
+require_once(t3lib_extMgm::extPath('static_info_tables') . 'pi1/class.tx_staticinfotables_pi1.php');
 
 class tx_commerce_pibase extends tslib_pibase {
 
@@ -48,6 +49,14 @@ class tx_commerce_pibase extends tslib_pibase {
 	var $imgFolder = '';
 	var $showCurrency = true; // extension to moneylib, if currency should be put out
 	var $currency = 'EUR';  // currency if no currency is set otherwise
+
+	/**
+	 * Holding the Static_info object
+	 *
+	 * @var tx_staticinfotables_pi1
+	 */
+	var $staticInfo;
+
 
 	/**
  	 * Holds the merged Array Langmarkers from locallang
@@ -64,7 +73,7 @@ class tx_commerce_pibase extends tslib_pibase {
  	 */
 
 	var $basketHashValue = false;
-	
+
 	/**
 	 * Holds the workspace, if one is used
 	 *
@@ -118,6 +127,9 @@ class tx_commerce_pibase extends tslib_pibase {
 		$this->piVars['basketHashValue'] = $this->basketHashValue;
 		$this->imgFolder = 'uploads/tx_commerce/';
 		$this->addAdditionalLocallang();
+
+		$this->staticInfo = t3lib_div::makeInstance('tx_staticinfotables_pi1');
+		$this->staticInfo->init();
 
 		$this->generateLanguageMarker();
 		if (empty($this->conf['templateFile'])) {
@@ -1215,15 +1227,23 @@ class tx_commerce_pibase extends tslib_pibase {
 				$savevalue = $value;
 				$value = $this->getLabelFromTCA($ctrl,$field,$value);
 			case 'NUMBERFORMAT' :
-				if($TSconf['format']){
+				if ($TSconf['format']) {
 					$value = number_format((float)$value,$TSconf['format.']['decimals'],$TSconf['format.']['dec_point'],$TSconf['format.']['thousands_sep']);
 				}
+				//FALLTROUGH
 			case 'STDWRAP' :
 				$output = $this->cObj->stdWrap($value, $TSconf);
 				break;
+
+			case 'STATIC_INFO_TABLES':
+				$this->staticInfo = t3lib_div::makeInstance('tx_staticinfotables_pi1');
+				$this->staticInfo->init();
+				$output = $this->staticInfo->getStaticInfoName($TSconf['field'], $value);
+				break;
+
 			default :
 				$output = $value;
-			break;
+				break;
 		}
 
 
