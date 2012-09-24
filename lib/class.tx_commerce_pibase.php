@@ -394,6 +394,22 @@ class tx_commerce_pibase extends tslib_pibase {
 
 	function makeListView(){
 
+		if($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'type', 's_product') == "random"
+				&& sizeof($this->category_products) > 1) {
+
+			$this->pi_USER_INT_obj = true; //Disable Caching
+
+			// Randomize the current list and pick 1
+			$keys = array_keys($this->category_products);
+			if(sizeof($keys)) {
+				$random_index = $keys[rand(0, sizeof($keys)-1)];
+				$random_item = $this->category_products[$random_index];
+				if($random_item) {
+					$this->category_products = array($random_item);
+				}
+			}
+		}
+
 		/**
 		 * Category LIST
 		 *
