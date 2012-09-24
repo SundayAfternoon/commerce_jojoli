@@ -165,7 +165,7 @@ class tx_commerce_pi2 extends tx_commerce_pibase {
 			$markerArray['###URL###'] = $this->pi_linkTP_keepPIvars_url(array(), 0, 1, $this->conf['basketPid']);
 			$markerArray['###URL_CHECKOUT###'] = $this->pi_linkTP_keepPIvars_url(array(), 0, 1, $this->conf['checkoutPid']);
 			$markerArray['###NO_STOCK MESSAGE###'] = $this->noStock;
-			
+
 			// Hook for additional markers in empty quick view basket template
 			foreach ($hookObjectsArr as $hookObj) {
 				if(method_exists($hookObj, 'additionalMarker')) {
@@ -206,7 +206,7 @@ class tx_commerce_pi2 extends tx_commerce_pibase {
 			}
 		}
 
-	 	/**
+		/**
 		 * Hook for processing the basket, after adding an article to basket
 		 */
 		$hookObjectsArr = array();
@@ -253,7 +253,7 @@ class tx_commerce_pi2 extends tx_commerce_pibase {
 						if (method_exists($hookObj, 'postDeleteArtUidSingle')) {
 							$hookObj->postDeleteArtUidSingle($k, $v, $oldCountValue, $this->basket, $this);
 						}
-					}					
+					}
 				}else{
 					$articleObj = t3lib_div::makeInstance('tx_commerce_article');
 					$articleObj->init($k);
