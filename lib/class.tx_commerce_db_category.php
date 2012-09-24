@@ -316,7 +316,7 @@ class tx_commerce_db_category extends tx_commerce_db_alib {
 
 
 		$queryArray = array(
-			'SELECT' => 'tx_commerce_products.uid',
+			'SELECT' => 'DISTINCT tx_commerce_products.uid',
 			'FROM' => 'tx_commerce_products ,tx_commerce_products_categories_mm,tx_commerce_articles, tx_commerce_article_prices',
 			'WHERE' => 'tx_commerce_products.uid=tx_commerce_products_categories_mm.uid_local '.$where_clause,
 			'GROUPBY' => '',
