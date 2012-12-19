@@ -61,6 +61,8 @@ class tx_commerce_pi6 extends tx_commerce_pibase {
 	 * @return string Compiled content
 	 */
 	function main($content, $conf) {
+		parent::init($conf);
+
 		$this->conf = $conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();

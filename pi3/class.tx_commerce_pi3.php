@@ -48,6 +48,7 @@ require_once (PATH_txcommerce . 'lib/class.tx_commerce_pibase.php');
 require_once (PATH_txcommerce . 'lib/class.tx_commerce_div.php');
 require_once (PATH_txcommerce . 'pi4/class.tx_commerce_pi4.php');
 
+// require_once (t3lib_extMgm::extPath('static_info_tables') . 'pi1/class.tx_staticinfotables_pi1.php');
 
 class tx_commerce_pi3 extends tx_commerce_pibase {
 	var $prefixId = 'tx_commerce_pi3'; // Same as class name
@@ -59,6 +60,12 @@ class tx_commerce_pi3 extends tx_commerce_pibase {
 	var $dbFieldData = array();
 	var $formError = array();
 
+// 	/**
+// 	 * Holding the Static_info object
+// 	 *
+// 	 * @var Object tx_staticinfotables_pi1
+// 	 */
+// 	var $staticInfo;
 
 	var $currentStep = '';
 
@@ -131,6 +138,8 @@ class tx_commerce_pi3 extends tx_commerce_pibase {
 
 		$this->conf['basketPid'] = $GLOBALS['TSFE']->id;
 
+// 		$this->staticInfo = t3lib_div::makeInstance('tx_staticinfotables_pi1');
+// 		$this->staticInfo->init();
 
 		$this->extConf = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][COMMERCE_EXTkey]['extConf'];
 		$this->imgFolder = 'uploads/tx_commerce/';
