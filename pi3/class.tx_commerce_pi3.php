@@ -1007,11 +1007,12 @@ class tx_commerce_pi3 extends tx_commerce_pibase {
 		$markerArray['###MESSAGE###'] = '';
 		$markerArray['###LISTING_TITLE###'] = $this->pi_getLL('order_confirmation');
 
-		if (method_exists($paymentObj, 'getSuccessData')) {
-			$markerArray['###MESSAGE_PAYMENT_OBJECT###'] = $paymentObj->getSuccessData($this);
-		} else {
-			$markerArray['###MESSAGE_PAYMENT_OBJECT###'] = '';
-		}
+
+
+		//FIXME: HAXZOR! Code verplaatst naar beneden. Zie volgende HAXZOR comment
+		// this is done becase iDeal exits the code.
+		$markerArray['###MESSAGE_PAYMENT_OBJECT###'] = ''; // Fill this with empty string, since the code has been moved
+
 
 		$deliveryAddress = '';
 		if ($orderData['cust_deliveryaddress']) {
@@ -1057,6 +1058,17 @@ class tx_commerce_pi3 extends tx_commerce_pibase {
 				$hookObj->postFinish($basket, $this);
 			}
 		}
+
+
+		// HAXZOR! Ideal plugin doet een harde 'exit()' tijdens getSuccessData();
+		// Daardoor gaat deze code hier niet verder meer en gaat e.e.a. mis bij afronden.
+		// Code verplaatst naar hier, zodat de rest ook wordt uitgevoerd.
+		if (method_exists($paymentObj, 'getSuccessData')) {
+			$markerArray['###MESSAGE_PAYMENT_OBJECT###'] = $paymentObj->getSuccessData($this);
+		} else {
+			$markerArray['###MESSAGE_PAYMENT_OBJECT###'] = '';
+		}
+
 
 		// At last remove some things from the session
 		// Change from mySession to real session key
